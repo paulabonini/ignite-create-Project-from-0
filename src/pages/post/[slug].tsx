@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
@@ -35,9 +36,10 @@ interface Post {
 
 interface PostProps {
   post: Post;
+  preview: boolean;
 }
 
-export default function Post({ post }: PostProps) {
+export default function Post({ post, preview }: PostProps) {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -106,6 +108,14 @@ export default function Post({ post }: PostProps) {
         <hr />
 
         <Comments />
+
+        {preview && (
+          <aside className={styles.aside}>
+            <Link href="/api/exit-preview">
+              <a>Sair do modo Preview</a>
+            </Link>
+          </aside>
+        )}
       </div>
     </>
   );
@@ -133,6 +143,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({
   params,
+  preview = false,
   previewData,
 }) => {
   const { slug } = params;
@@ -163,6 +174,7 @@ export const getStaticProps: GetStaticProps = async ({
   return {
     props: {
       post,
+      preview,
     },
     revalidate: 60 * 30, // 30 minutes
   };
