@@ -132,16 +132,17 @@ export default function Post({ post, pagination, preview }: PostProps) {
                 <p>{`${readingTime} min`}</p>
               </div>
             </footer>
+
+            {post?.last_publication_date && (
+              <span className={commonStyles.lastEdit}>
+                {format(
+                  new Date(post.last_publication_date),
+                  "'* editado em 'dd MMM yyyy', às' HH:mm",
+                  { locale: ptBR }
+                )}
+              </span>
+            )}
           </header>
-          {post?.last_publication_date && (
-            <span className={commonStyles.lastEdit}>
-              {format(
-                new Date(post.last_publication_date),
-                "'* editado em 'dd MMM yyyy', às' HH:mm",
-                { locale: ptBR }
-              )}
-            </span>
-          )}
           {post.data.content.map(item => (
             <div key={item.heading}>
               <h2>{item.heading}</h2>
