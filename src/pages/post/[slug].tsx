@@ -12,10 +12,11 @@ import { RichText } from 'prismic-dom';
 import { getPrismicClient } from '../../services/prismic';
 
 import Header from '../../components/Header';
-import Comments from '../../components/Comments';
+// import Comments from '../../components/Comments';
 
 import styles from './post.module.scss';
 import commonStyles from '../../styles/common.module.scss';
+import { useEffect, useRef } from 'react';
 
 interface Post {
   first_publication_date: string | null;
@@ -73,6 +74,30 @@ export default function Post({ post, pagination, preview }: PostProps) {
     'dd MMM yyyy',
     { locale: ptBR }
   );
+
+  const commentsSection = useRef<HTMLDivElement>();
+
+  useEffect(() => {
+    const hasScript = commentsSection?.current.querySelector('.utterances');
+
+    if (hasScript) {
+      hasScript.remove();
+    }
+
+    const utteranceScript = document.createElement('script');
+
+    utteranceScript.setAttribute('src', 'https://utteranc.es/client.js');
+    utteranceScript.setAttribute('crossorigin', 'anonymous');
+    utteranceScript.setAttribute('async', 'true');
+    utteranceScript.setAttribute(
+      'repo',
+      'paulabonini/ignite-create-Project-from-0'
+    );
+    utteranceScript.setAttribute('issue-term', 'pathname');
+    utteranceScript.setAttribute('theme', 'github-dark');
+
+    commentsSection.current?.appendChild(utteranceScript);
+  }, [post]);
 
   return (
     <>
@@ -151,7 +176,7 @@ export default function Post({ post, pagination, preview }: PostProps) {
             </section>
           )}
         </section>
-        <Comments />
+        <section ref={commentsSection} />
 
         {preview && (
           <aside className={styles.aside}>
