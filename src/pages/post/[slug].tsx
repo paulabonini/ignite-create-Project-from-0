@@ -105,11 +105,9 @@ export default function Post({ post, pagination, preview }: PostProps) {
         <title>{`${post.data.title} | spacetraveling`}</title>
       </Head>
       <Header />
-      <img
-        src={post.data.banner.url}
-        alt={post.data.title}
-        className={styles.banner}
-      />
+      <div className={styles.imgBox}>
+        <img src={post.data.banner.url} alt={post.data.title} />
+      </div>
       <div className={styles.container}>
         <article>
           <header>
